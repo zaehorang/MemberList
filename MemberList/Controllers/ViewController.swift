@@ -33,12 +33,6 @@ final class ViewController: UIViewController {
         setupTableViewConstraints()
     }
     
-    // 델리게이트가 아닌 방식으로 구현할때는 화면 리프레시⭐️
-    override func viewWillAppear(_ animated: Bool) {
-        super.viewWillAppear(animated)
-        // 뷰가 다시 나타날때, 테이블뷰를 리로드
-        tableView.reloadData()
-    }
     
     func setupNaviBar() {
         title = "회원 목록"
@@ -128,6 +122,9 @@ extension ViewController: UITableViewDelegate {
         // 다음화면으로 이동
         let detailVC = DetailViewController()
         
+        // 다음 화면의 대리자 설정 (다음 화면의 대리자는 지금 현재의 뷰컨트롤러)
+        detailVC.delegate = self
+        
         // 다음 화면에 멤버를 전달
         let currentMember = memberListManager.getMembersList()[indexPath.row]
         detailVC.member = currentMember
@@ -135,5 +132,25 @@ extension ViewController: UITableViewDelegate {
         // 화면이동
         navigationController?.pushViewController(detailVC, animated: true)
         //show(detailVC, sender: nil)
+    }
+}
+
+//MARK: - 멤버 추가하거나, 업데이트에 대한 델리게이트 구현
+
+extension ViewController: MemberDelegate {
+    // 멤버가 추가되면 실행할 메서드 구현
+    func addNewMember(_ member: Member) {
+        // 모델에 멤버 추가
+        memberListManager.makeNewMember(member)
+        // 테이블뷰를 다시 로드 (다시 그리기)
+        tableView.reloadData()
+    }
+    
+    // 멤버의 정보가 업데이트 되면 실행할 메서드 구현
+    func update(index: Int, _ member: Member) {
+        // 모델에 멤버 정보 업데이트
+        memberListManager.updateMemberInfo(index: index, member)
+        // 테이블뷰를 다시 로드 (다시 그리기)
+        tableView.reloadData()
     }
 }

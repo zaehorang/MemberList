@@ -16,8 +16,8 @@ final class DetailViewController: UIViewController {
     // 전화면에서 Member데이터를 전달 받기 위한 변수
     var member: Member?
     
-    // 대리자설정을 위한 변수(델리게이트)
-    //weak var delegate: MemberDelegate?
+    // 대리자설정을 위한 변수(델리게이트) -> vc에서 화면 띄울 때 값을 넣어줘야 함
+    weak var delegate: MemberDelegate?
     
     // MVC패턴을 위해서, view교체
     override func loadView() {
@@ -61,12 +61,8 @@ final class DetailViewController: UIViewController {
             var newMember = Member(name: name, age: age, phone: phoneNumber, address: address)
             newMember.memberImage = detailView.mainImageView.image
             
-            // 1) 델리게이트 방식이 아닌 구현⭐️ -> 인덱스가 .count - 1일떄는 본인을 가르킴
-            let index = navigationController!.viewControllers.count - 2
-            // 전 화면에 접근하기 위함
-            let vc = navigationController?.viewControllers[index] as! ViewController
-            // 전 화면의 모델에 접근해서 멤버를 추가
-            vc.memberListManager.makeNewMember(newMember)
+            // 2) 델리게이트 방식으로 구현⭐️
+            delegate?.addNewMember(newMember)
             
         // [2] 멤버가 있다면 (멤버의 내용을 업데이트 하기 위한 설정)
         } else {
@@ -82,12 +78,8 @@ final class DetailViewController: UIViewController {
             // 뷰에도 바뀐 멤버를 전달 (뷰컨트롤러 ==> 뷰)
             detailView.member = member
             
-            // 1) 델리게이트 방식이 아닌 구현⭐️
-            let index = navigationController!.viewControllers.count - 2
-            // 전 화면에 접근하기 위함
-            let vc = navigationController?.viewControllers[index] as! ViewController
-            // 전 화면의 모델에 접근해서 멤버를 업데이트
-            vc.memberListManager.updateMemberInfo(index: memberId, member!)
+            // 델리게이트 방식으로 구현⭐️
+            delegate?.update(index: memberId, member!)
             
         }
         

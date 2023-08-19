@@ -7,6 +7,13 @@
 
 import UIKit
 
+// (커스텀) 델리게이트 패턴 구현을 위한 프로토콜 선언
+protocol MemberDelegate: AnyObject {
+    func addNewMember(_ member: Member)
+    func update(index: Int, _ member: Member)
+}
+
+// 멤버 모델
 struct Member {
     
     lazy var memberImage: UIImage? = {
