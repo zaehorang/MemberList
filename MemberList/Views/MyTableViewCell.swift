@@ -7,7 +7,7 @@
 
 import UIKit
 
-class MyTableViewCell: UITableViewCell {
+final class MyTableViewCell: UITableViewCell {
     
     //MARK: - 멤버 저장속성 구현
     // 멤버가 변할때마다 자동으로 업데이트 되도록 구현 didSet(속성 감시자) ⭐️
@@ -58,8 +58,6 @@ class MyTableViewCell: UITableViewCell {
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: .default, reuseIdentifier: reuseIdentifier)
         setupStackView()
-        
-        // 셀 오토레이아웃 일반적으로 생성자에서 잡으면 됨 ⭐️⭐️⭐️
         setConstraints()
     }
     
@@ -68,7 +66,6 @@ class MyTableViewCell: UITableViewCell {
         self.contentView.addSubview(mainImageView)
         self.contentView.addSubview(stackView)
         
-        // 스택뷰 위에 뷰들 올리기
         stackView.addArrangedSubview(memberNameLabel)
         stackView.addArrangedSubview(addressLabel)
     }
@@ -78,11 +75,6 @@ class MyTableViewCell: UITableViewCell {
     }
     
     //MARK: - 오토레이아웃 셋팅
-    // (오토레이아웃 변하지 않는 경우) 일반적으로 생성자에서 잡으면 됨 ⭐️⭐️⭐️
-//    override func updateConstraints() {
-//        setConstraints()
-//        super.updateConstraints()
-//    }
     
     override func layoutSubviews() {
         super.layoutSubviews()
